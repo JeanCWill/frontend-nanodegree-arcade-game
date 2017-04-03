@@ -34,6 +34,9 @@ Enemy.prototype.checkCollisions = function () {
 
     level = 1;
     numEnemies = 2;
+
+    allEnemies = [];
+    calculateAddEnemy();
   }
 
   if (this.x >= 500) {
@@ -142,7 +145,7 @@ var player = new Player(202, 380, 100);
 var level = 1;
 var numEnemies = 2;
 
-addEnemy();
+calculateAddEnemy();
 
 // Evento para verificar as teclas pressionadas
 document.addEventListener('keyup', function(e) {
