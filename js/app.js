@@ -1,39 +1,150 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+var Item = function(x, y, speed, sprite) {
+  this.x = x;
+  this.y = y;
+  this.speed = speed;
+  this.sprite = sprite;
+}
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+Item.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+// Inimigos que o jogador deve evitar
+var Enemy = function(x, y, speed) {
+    Item.call(this, x, y, speed, 'images/enemy-bug.png');
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+Enemy.prototype = Object.create(Item.prototype);
+Enemy.prototype.constructor = Enemy;
+
+// Atualiza a posição dos inimigos na tela, levando em conta sua velocidade
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+  this.x += this.speed * dt;
+  this.checkCollisions();
+  calculateAddEnemy();
+}
+
+// Verifica se o inimigo colidiu com o personagem
+Enemy.prototype.checkCollisions = function () {
+  if (player.x >= this.x - 70 &&
+      player.x <= this.x + 70 &&
+      player.y == this.y) {
+    player.x = 202;
+    player.y = 380;
+
+    level = 1;
+    numEnemies = 2;
+  }
+
+  if (this.x >= 500) {
+    this.y = calculateEnemyY();
+    this.x = 0;
+    this.speed = calculateEnemySpeed();
+  }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+// Jogador
+var Player = function(x, y, speed) {
+  Item.call(this, x, y, speed, 'images/char-boy.png');
+}
+
+Player.prototype = Object.create(Item.prototype);
+Player.prototype.constructor = Player;
+
+// Atualiza o jogador
+Player.prototype.update = function(dt) {
+  this.checkWin();
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Atualiza a posição do jogador de acordo com o botão clicado
+Player.prototype.handleInput = function(key) {
+  switch(key) {
+    case 'up':
+      this.y -= this.speed - 20;
+      break;
+    case 'down':
+      this.y += this.speed - 20;
+      break;
+    case 'left':
+      this.x -= this.speed;
+      break;
+    case 'right':
+      this.x += this.speed;
+      break;
+    default:
+      break;
+  };
+};
 
+// Verifica se o jogador venceu o jogo chegando na água
+// Verifica também os limites da tela, para que o jogador não saia dela
+Player.prototype.checkWin = function() {
+  if (player.y <= 0) {
+    player.x = 202;
+    player.y = 380;
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+    level++;
+    numEnemies++;
+  }
 
+  if (player.y > 380) {
+    player.y = 380;
+  }
 
+  if (player.x < 2) {
+    player.x = 2;
+  }
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+  if (player.x > 402) {
+    player.x = 402;
+  }
+};
+
+// Calcula aleatóriamente a posição do inimigo no eixo y
+var calculateEnemyY = function() {
+  var y = Math.floor(Math.random() * -3 + 1) * -1;
+
+  if (y == 1) {
+    return 60;
+  } else if (y == 2) {
+    return 140;
+  } else {
+    return 220;
+  }
+}
+
+// Calcula aleatóriamente a velocidade do inimigo
+var calculateEnemySpeed = function() {
+  var speed = Math.floor(Math.random() * 500 );
+
+  if (speed < 50) {
+    speed = 50;
+  }
+
+  return speed;
+}
+
+// Adiciona um novo inimigo na tela
+var addEnemy = function() {
+  allEnemies.push(new Enemy(0, calculateEnemyY(), calculateEnemySpeed()));
+}
+
+// Adiciona, se possível, um novo inimigo na tela, mantendo o número de Inimigos
+// condizente com o nível atingido
+var calculateAddEnemy = function() {
+  if (allEnemies.length < numEnemies) {
+    addEnemy();
+  }
+}
+
+var allEnemies = [];
+var player = new Player(202, 380, 100);
+var level = 1;
+var numEnemies = 2;
+
+addEnemy();
+
+// Evento para verificar as teclas pressionadas
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
