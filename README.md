@@ -1,6 +1,22 @@
-frontend-nanodegree-arcade-game
-===============================
+# Udacity Frogger Arcade Game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+## Resumo
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+O jogo Udacity Frogger Arcade Game é uma variação do tradicional jogo de arcade Frogger.
+
+### Objetivos
+
+O objetivo deste jogo é muito simples, você deve mover o personagem através das pedras em direção a água, sem ser atigindo pelos inimigos. O número de inimigos aumenta conforme o personagem for conseguindo chegar na água, sendo resetado quando ele é atingido por um inimigo.
+
+### Controles
+
+O personagem pode ser controlado pelas setas do teclado.
+
+## Instalação
+
+Para rodar o jogo:
+
+1. Baixe o arquivo compactado do GitHub ou clone o repositório para sua máquina:
+2.1 [Arquivo compactado](https://github.com/JeanCWill/frontend-nanodegree-arcade-game/archive/master.zip)
+2.2 [Clonar o repositório](https://github.com/JeanCWill/frontend-nanodegree-arcade-game.git)
+2. Abrir o arquivo `index.html` no navegador.
